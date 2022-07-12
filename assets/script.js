@@ -19,11 +19,18 @@ function writePassword() {
     passLength = prompt("What is the length you want for your password? (8-120 characters)");
   }
 
-  // creating booleans for the criterias
-  var lower = confirm("Include LOWERCASE characters in the password?");
-  var upper = confirm("Include UPPERCASE characters in the password?");
-  var numeric = confirm("Include NUMERIC characters in the password?");
-  var special = confirm("Include SPECIAL characters in the password?");
+  // creating booleans for the criterias and keeps asking for criterias until at least 1 is selected
+  var all = false;
+  while(!all){
+    var lower = confirm("Include LOWERCASE characters in the password?");
+    var upper = confirm("Include UPPERCASE characters in the password?");
+    var numeric = confirm("Include NUMERIC characters in the password?");
+    var special = confirm("Include SPECIAL characters in the password?");
+    all = lower || upper || numeric || special;
+    if(all === false){
+      alert("PLEASE ENTER AT LEAST 1 CRITERIA!");
+    }
+  }
 
   // creates a password until it meets all of the criterias
   var checked = false;
