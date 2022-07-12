@@ -1,8 +1,7 @@
-// Assignment code here
-
-
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
+
+// special, alphabet, and number characters arrays
 var specialChar = [' ','!','\"','#','$','%','&','\'','(',')','*','+',
                   ',','-','.','/',':',';','<','=','>','?','@','[','\\',
                   ']','^','_','`','{','|','}','~'];
@@ -14,7 +13,7 @@ var numbers = ['0','1','2','3','4','5','6','7','8','9'];
 
 // Write password to the #password input
 function writePassword() {
-  // getting length of password
+  // getting length of password from user
   var passLength = 0;
   while(passLength < 8 || passLength > 120){
     passLength = prompt("What is the length you want for your password? (8-120 characters)");
@@ -26,19 +25,22 @@ function writePassword() {
   var numeric = confirm("Include NUMERIC characters in the password?");
   var special = confirm("Include SPECIAL characters in the password?");
 
+  // creates a password until it meets all of the criterias
   var checked = false;
   while(!checked){
     var password = generatePassword(lower, upper, numeric, special);
     var checked = checkPass();
   }
-  var passwordText = document.querySelector("#password");
 
+  // putting text value to be the generated password
+  var passwordText = document.querySelector("#password");
   passwordText.value = password;
 
   // generatePassword function
  function generatePassword(low, upp, num, spe) {
   var pass = '';
   
+  // makes password have randomly placed characters
   for(var i = 0; i < passLength; i++){
     var indicator = Math.floor(Math.random() * 4);
     if(indicator == 0 && low){
@@ -56,55 +58,57 @@ function writePassword() {
   return pass;
 }
 
+// checks the password to make sure it meets all criterias
 function checkPass(){
-  var allIn = true;
+  var lowIn = true;
   if(lower){
     for(var x = 0; x < alphabet.length; x++){
       if(password.includes(alphabet[x])){
-        allIn = true;
+        lowIn = true;
         break;
       } else {
-        allIn = false;
+        lowIn = false;
       }
     }
   }
+  var uppIn = true;
   if(upper){
     for(var x = 0; x < alphabet.length; x++){
       if(password.includes(alphabet[x].toUpperCase())){
-        allIn = true;
+        uppIn = true;
         break;
       } else {
-        allIn = false;
+        uppIn = false;
       }
     }
   }
+  var numIn = true;
   if(numeric){
     for(var x = 0; x < numbers.length; x++){
       if(password.includes(numbers[x])){
-        allIn = true;
+        numIn = true;
         break;
       } else {
-        allIn = false;
+        numIn = false;
       }
     }
   }
+  var speIn = true;
   if(special){
-    for(var x = 0; x < alphabet.length; x++){
-      if(password.includes(alphabet[x])){
-        allIn = true;
+    for(var x = 0; x < specialChar.length; x++){
+      if(password.includes(specialChar[x])){
+        speIn = true;
         break;
       } else {
-        allIn = false;
+        speIn = false;
       }
     }
   }
-  return allIn;
+  return lowIn && uppIn && numIn && speIn;
 
 }
 
 }
 
 // Add event listener to generate button
-generateBtn.onclick = function() {
-  writePassword();
-}
+generateBtn.addEventListener("click", writePassword);
